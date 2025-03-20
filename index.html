@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Club</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: white;
+            transition: background 0.5s;
+        }
+        #text-container {
+            font-size: 24px;
+            margin: 20px auto;
+            width: 80%;
+            padding: 10px;
+            border: 2px solid white;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        #input-box {
+            width: 80%;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            text-align: center;
+        }
+        .stats {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .theme-switcher {
+            margin-top: 20px;
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .light-theme {
+            background: linear-gradient(to right, #f8f9fa, #e0e0e0);
+            color: black;
+        }
+        .dark-theme {
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Typing Club</h1>
+    <p>Type the text below as fast as you can:</p>
+    <div id="text-container">The quick brown fox jumps over the lazy dog.</div>
+    <input type="text" id="input-box" oninput="checkTyping()" placeholder="Start typing here...">
+    <div class="stats">
+        <p>WPM: <span id="wpm">0</span></p>
+        <p>Accuracy: <span id="accuracy">100%</span></p>
+    </div>
+    <p id="result"></p>
+    <div class="theme-switcher">
+        <button onclick="setTheme('light')">Light Theme</button>
+        <button onclick="setTheme('dark')">Dark Theme</button>
+    </div>
+    
+    <script>
+        let originalText = "The quick brown fox jumps over the lazy dog.";
+        let startTime;
+        let wordCount = 0;
+        
+        function checkTyping() {
+            let userInput = document.getElementById('input-box').value;
+            let typedChars = userInput.length;
+            
+            if (typedChars === 1 && !startTime) {
+                startTime = new Date();
+            }
+            
+            let correctChars = 0;
+            let wordsTyped = userInput.trim().split(" ").length;
+            if (userInput.trim().length === 0) wordsTyped = 0;
+            
+            for (let i = 0; i < userInput.length; i++) {
+                if (userInput[i] === originalText[i]) {
+                    correctChars++;
+                }
+            }
+            let accuracy = typedChars > 0 ? ((correctChars / typedChars) * 100).toFixed(2) : 100;
+            document.getElementById('accuracy').innerText = accuracy + "%";
+            
+            if (startTime) {
+                let currentTime = new Date();
+                let timeElapsed = (currentTime - startTime) / 1000 / 60; // time in minutes
+                let wpm = timeElapsed > 0 ? Math.round(wordsTyped / timeElapsed) : 0;
+                document.getElementById('wpm').innerText = wpm;
+            }
+            
+            if (userInput === originalText) {
+                document.getElementById('result').innerText = "Great job! You completed the test!";
+            } else {
+                document.getElementById('result').innerText = "Keep typing...";
+            }
+        }
+
+        function setTheme(theme) {
+            if (theme === 'light') {
+                document.body.classList.remove('dark-theme');
+                document.body.classList.add('light-theme');
+            } else {
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+            }
+        }
+    </script>
+</body>
+</html>
