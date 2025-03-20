@@ -1,0 +1,1156 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Steel Weight Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --light-accent: #85c1e9;
+        --steel-gray: #7f8c8d;
+        --light-gray: #ecf0f1;
+        --silver: #bdc3c7;
+        --dark-silver: #95a5a6;
+        --white: #ffffff;
+        --black: #000000;
+        --border-radius: 4px;
+        --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    body {
+        font-family: 'Roboto', 'Arial', sans-serif;
+        line-height: 1.6;
+        color: var(--primary-color);
+        background-color: var(--light-gray);
+        margin: 0;
+        padding: 0;
+    }
+
+    .header {
+        background-color: var(--primary-color);
+        color: var(--white);
+        padding: 1rem 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+
+    .header small {
+        font-size: 1rem;
+        opacity: 0.8;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+
+    .card {
+        background-color: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--silver);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+        background-color: var(--secondary-color);
+        color: var(--white);
+        padding: 1rem;
+        border-top-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+        font-weight: 500;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        color: var(--secondary-color);
+    }
+
+    .form-control {
+        display: block;
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--steel-gray);
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: var(--accent-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    .form-select {
+        display: block;
+        width: 100%;
+        padding: 0.5rem 0.75rem;
+        border: 1px solid var(--steel-gray);
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.75rem center;
+        background-size: 16px 12px;
+        appearance: none;
+    }
+
+    .form-select:focus {
+        border-color: var(--accent-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    .units-toggle {
+        display: flex;
+        margin-bottom: 1rem;
+        background-color: var(--light-gray);
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        width: 200px;
+    }
+
+    .units-toggle label {
+        flex: 1;
+        text-align: center;
+        padding: 0.5rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .units-toggle input[type="radio"] {
+        display: none;
+    }
+
+    .units-toggle input[type="radio"]:checked + label {
+        background-color: var(--accent-color);
+        color: var(--white);
+    }
+
+    .btn {
+        display: inline-block;
+        font-weight: 500;
+        text-align: center;
+        cursor: pointer;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--border-radius);
+        transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+        border: none;
+        font-size: 1rem;
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-primary {
+        background-color: var(--accent-color);
+        color: var(--white);
+    }
+
+    .btn-primary:hover {
+        background-color: #2980b9;
+    }
+
+    .btn-secondary {
+        background-color: var(--steel-gray);
+        color: var(--white);
+    }
+
+    .btn-secondary:hover {
+        background-color: #6d7b7c;
+    }
+
+    .result-box {
+        background-color: var(--light-accent);
+        color: var(--primary-color);
+        padding: 1rem;
+        border-radius: var(--border-radius);
+        margin-top: 1rem;
+        font-weight: 500;
+        font-size: 1.2rem;
+        text-align: center;
+        box-shadow: var(--box-shadow);
+        transition: opacity 0.3s ease;
+    }
+
+    .result-box.hidden {
+        display: none;
+    }
+
+    .dimension-inputs {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .shape-selector {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .shape-item {
+        border: 2px solid var(--silver);
+        border-radius: var(--border-radius);
+        padding: 1rem;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .shape-item:hover {
+        border-color: var(--accent-color);
+    }
+
+    .shape-item.active {
+        border-color: var(--accent-color);
+        background-color: rgba(52, 152, 219, 0.1);
+    }
+
+    .shape-item svg {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 0.5rem;
+        fill: var(--secondary-color);
+    }
+
+    .shape-name {
+        font-weight: 500;
+        color: var(--secondary-color);
+    }
+
+    .footer {
+        background-color: var(--secondary-color);
+        color: var(--white);
+        padding: 1.5rem 0;
+        text-align: center;
+        margin-top: 3rem;
+    }
+
+    .calculations-info {
+        margin-top: 2rem;
+        padding: 1rem;
+        background-color: var(--light-gray);
+        border-radius: var(--border-radius);
+    }
+
+    .calculations-info h3 {
+        margin-top: 0;
+        color: var(--secondary-color);
+    }
+
+    .unit-display {
+        color: var(--steel-gray);
+        font-size: 0.9rem;
+        margin-left: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .dimension-inputs {
+            grid-template-columns: 1fr;
+        }
+        
+        .shape-selector {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    .hidden-field {
+        display: none;
+    }
+
+    .alert {
+        padding: 0.75rem 1rem;
+        margin-bottom: 1rem;
+        border-radius: var(--border-radius);
+        border: 1px solid transparent;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+    }
+
+    .validation-error {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+    }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1>Steel Weight Calculator <small>Professional Edition</small></h1>
+                </div>
+                <div class="col-md-4 text-end">
+                    <p class="m-0">Accurate, Fast & Reliable</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        <div class="row">
+            <div class="col-lg-12 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="m-0">Calculate Steel Weight</h2>
+                    </div>
+                    <div class="card-body">
+                        <form id="calculator-form">
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <h4>1. Select Steel Shape</h4>
+                                    <div class="shape-selector">
+                                        <div class="shape-item active" data-shape="plate">
+                                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="10" y="25" width="80" height="50" />
+                                            </svg>
+                                            <div class="shape-name">Plate</div>
+                                        </div>
+                                        <div class="shape-item" data-shape="round_bar">
+                                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="50" cy="50" r="25" />
+                                            </svg>
+                                            <div class="shape-name">Round Bar</div>
+                                        </div>
+                                        <div class="shape-item" data-shape="square_bar">
+                                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="25" y="25" width="50" height="50" />
+                                            </svg>
+                                            <div class="shape-name">Square Bar</div>
+                                        </div>
+                                        <div class="shape-item" data-shape="hex_bar">
+                                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                                <polygon points="75,50 62.5,75 37.5,75 25,50 37.5,25 62.5,25" />
+                                            </svg>
+                                            <div class="shape-name">Hex Bar</div>
+                                        </div>
+                                        <div class="shape-item" data-shape="tube">
+                                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="50" cy="50" r="30" fill="currentColor" />
+                                                <circle cx="50" cy="50" r="20" fill="white" />
+                                            </svg>
+                                            <div class="shape-name">Tube</div>
+                                        </div>
+                                        <div class="shape-item" data-shape="rect_tube">
+                                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                                <rect x="20" y="30" width="60" height="40" />
+                                                <rect x="30" y="40" width="40" height="20" fill="white" />
+                                            </svg>
+                                            <div class="shape-name">Rect. Tube</div>
+                                        </div>
+                                        <div class="shape-item" data-shape="angle">
+                                            <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M25,25 L75,25 L75,35 L35,35 L35,75 L25,75 Z" />
+                                            </svg>
+                                            <div class="shape-name">Angle</div>
+                                        </div>
+                                    </div>
+                                    <select id="shape" class="form-select" style="display: none;">
+                                        <option value="plate">Plate</option>
+                                        <option value="round_bar">Round Bar</option>
+                                        <option value="square_bar">Square Bar</option>
+                                        <option value="hex_bar">Hexagonal Bar</option>
+                                        <option value="tube">Tube</option>
+                                        <option value="rect_tube">Rectangular Tube</option>
+                                        <option value="angle">Angle</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <h4>2. Select Steel Type</h4>
+                                    <div class="form-group">
+                                        <select id="steel-type" class="form-select">
+                                            <option value="">-- Select Steel Type --</option>
+                                            <option value="mild_steel">Mild Steel (7850 kg/m³)</option>
+                                            <option value="stainless_steel_304">Stainless Steel 304 (8000 kg/m³)</option>
+                                            <option value="stainless_steel_316">Stainless Steel 316 (8000 kg/m³)</option>
+                                            <option value="aluminum">Aluminum (2700 kg/m³)</option>
+                                            <option value="brass">Brass (8500 kg/m³)</option>
+                                            <option value="copper">Copper (8930 kg/m³)</option>
+                                            <option value="tool_steel">Tool Steel (7800 kg/m³)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4>3. Select Unit</h4>
+                                    <div class="units-toggle">
+                                        <input type="radio" id="metric" name="unit" value="metric" checked>
+                                        <label for="metric">Metric</label>
+                                        <input type="radio" id="imperial" name="unit" value="imperial">
+                                        <label for="imperial">Imperial</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-12">
+                                    <h4>4. Enter Dimensions</h4>
+                                    <div class="dimension-inputs">
+                                        <!-- Plate Fields -->
+                                        <div id="length-field" class="form-group dimension-field">
+                                            <label for="length" class="form-label">Length: <span class="unit-display">mm</span></label>
+                                            <input type="number" id="length" class="form-control" step="0.1" min="0.1">
+                                        </div>
+                                        <div id="width-field" class="form-group dimension-field">
+                                            <label for="width" class="form-label">Width: <span class="unit-display">mm</span></label>
+                                            <input type="number" id="width" class="form-control" step="0.1" min="0.1">
+                                        </div>
+                                        <div id="thickness-field" class="form-group dimension-field">
+                                            <label for="thickness" class="form-label">Thickness: <span class="unit-display">mm</span></label>
+                                            <input type="number" id="thickness" class="form-control" step="0.1" min="0.1">
+                                        </div>
+                                        
+                                        <!-- Round Bar Fields -->
+                                        <div id="diameter-field" class="form-group dimension-field hidden-field">
+                                            <label for="diameter" class="form-label">Diameter: <span class="unit-display">mm</span></label>
+                                            <input type="number" id="diameter" class="form-control" step="0.1" min="0.1">
+                                        </div>
+                                        
+                                        <!-- Square Bar Fields -->
+                                        <div id="side-field" class="form-group dimension-field hidden-field">
+                                            <label for="side" class="form-label">Side Length: <span class="unit-display">mm</span></label>
+                                            <input type="number" id="side" class="form-control" step="0.1" min="0.1">
+                                        </div>
+                                        
+                                        <!-- Hexagonal Bar Fields -->
+                                        <div id="across-flats-field" class="form-group dimension-field hidden-field">
+                                            <label for="across-flats" class="form-label">Across Flats: <span class="unit-display">mm</span></label>
+                                            <input type="number" id="across-flats" class="form-control" step="0.1" min="0.1">
+                                        </div>
+                                        
+                                        <!-- Tube Fields -->
+                                        <div id="outer-diameter-field" class="form-group dimension-field hidden-field">
+                                            <label for="outer-diameter" class="form-label">Outer Diameter: <span class="unit-display">mm</span></label>
+                                            <input type="number" id="outer-diameter" class="form-control" step="0.1" min="0.1">
+                                        </div>
+                                        <div id="inner-diameter-field" class="form-group dimension-field hidden-field">
+                                            <label for="inner-diameter" class="form-label">Inner Diameter: <span class="unit-display">mm</span></label>
+                                            <input type="number" id="inner-diameter" class="form-control" step="0.1" min="0.1">
+                                        </div>
+                                        
+                                        <!-- Rectangular Tube Fields -->
+                                        <div id="height-field" class="form-group dimension-field hidden-field">
+                                            <label for="height" class="form-label">Height: <span class="unit-display">mm</span></label>
+                                            <input type="number" id="height" class="form-control" step="0.1" min="0.1">
+                                        </div>
+                                        <div id="wall-thickness-field" class="form-group dimension-field hidden-field">
+                                            <label for="wall-thickness" class="form-label">Wall Thickness: <span class="unit-display">mm</span></label>
+                                            <input type="number" id="wall-thickness" class="form-control" step="0.1" min="0.1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary">Calculate Weight</button>
+                                    <button type="button" id="reset-button" class="btn btn-secondary ms-2">Reset</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-12">
+                <div id="results" class="hidden">
+                    <!-- Results will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="container mb-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">About Steel Weight Calculations</h3>
+                    </div>
+                    <div class="card-body">
+                        <p>This professional steel weight calculator allows engineers, fabricators, and project managers to quickly and accurately determine the weight of various steel shapes. The calculator uses industry-standard density values and precise mathematical formulas to ensure accurate results.</p>
+                        
+                        <h4>Calculation Methods</h4>
+                        <p>The weight is calculated using the formula: Weight = Volume × Density</p>
+                        <ul>
+                            <li><strong>Plates:</strong> Volume = Length × Width × Thickness</li>
+                            <li><strong>Round Bars:</strong> Volume = π × (Diameter/2)² × Length</li>
+                            <li><strong>Square Bars:</strong> Volume = Side² × Length</li>
+                            <li><strong>Hexagonal Bars:</strong> Volume = (3√3/2) × (Across Flats/2)² × Length</li>
+                            <li><strong>Tubes:</strong> Volume = π × (Outer Diameter² - Inner Diameter²)/4 × Length</li>
+                            <li><strong>Rectangular Tubes:</strong> Volume = (Height × Width - (Height-2t) × (Width-2t)) × Length</li>
+                            <li><strong>Angles:</strong> Volume = (Height × Thickness + (Width-Thickness) × Thickness) × Length</li>
+                        </ul>
+                        
+                        <h4>Material Densities</h4>
+                        <p>Different materials have different densities. This calculator includes common metal types:</p>
+                        <ul>
+                            <li>Mild Steel: 7850 kg/m³</li>
+                            <li>Stainless Steel (304/316): 8000 kg/m³</li>
+                            <li>Aluminum: 2700 kg/m³</li>
+                            <li>Brass: 8500 kg/m³</li>
+                            <li>Copper: 8930 kg/m³</li>
+                            <li>Tool Steel: 7800 kg/m³</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2025 Professional Steel Weight Calculator</p>
+        </div>
+    </footer>
+
+    <script>
+    /**
+     * Steel Weight Calculator
+     * Provides calculations for various steel shapes
+     */
+
+    // Density values for steel types (kg/m³)
+    const DENSITIES = {
+        'mild_steel': 7850,
+        'stainless_steel_304': 8000,
+        'stainless_steel_316': 8000,
+        'aluminum': 2700,
+        'brass': 8500,
+        'copper': 8930,
+        'tool_steel': 7800
+    };
+
+    // Unit conversion factors
+    const UNIT_FACTORS = {
+        // Length conversions
+        'mm_to_m': 0.001,
+        'm_to_mm': 1000,
+        'inch_to_m': 0.0254,
+        'm_to_inch': 39.3701,
+        'foot_to_m': 0.3048,
+        'm_to_foot': 3.28084,
+        
+        // Weight conversions
+        'kg_to_lb': 2.20462,
+        'lb_to_kg': 0.453592
+    };
+
+    /**
+     * Calculate weight of a steel plate
+     * @param {number} length - Length in selected unit
+     * @param {number} width - Width in selected unit
+     * @param {number} thickness - Thickness in selected unit
+     * @param {string} steelType - Type of steel
+     * @param {string} unit - Unit of measurement (metric/imperial)
+     * @returns {Object} Weight in kg and lb
+     */
+    function calculatePlateWeight(length, width, thickness, steelType, unit) {
+        let lengthM, widthM, thicknessM;
+        
+        if (unit === 'metric') {
+            lengthM = length * UNIT_FACTORS.mm_to_m;
+            widthM = width * UNIT_FACTORS.mm_to_m;
+            thicknessM = thickness * UNIT_FACTORS.mm_to_m;
+        } else {
+            lengthM = length * UNIT_FACTORS.inch_to_m;
+            widthM = width * UNIT_FACTORS.inch_to_m;
+            thicknessM = thickness * UNIT_FACTORS.inch_to_m;
+        }
+        
+        const volume = lengthM * widthM * thicknessM; // m³
+        const density = DENSITIES[steelType];
+        const weightKg = volume * density;
+        const weightLb = weightKg * UNIT_FACTORS.kg_to_lb;
+        
+        return {
+            kg: weightKg,
+            lb: weightLb
+        };
+    }
+
+    /**
+     * Calculate weight of a round bar
+     * @param {number} diameter - Diameter in selected unit
+     * @param {number} length - Length in selected unit
+     * @param {string} steelType - Type of steel
+     * @param {string} unit - Unit of measurement (metric/imperial)
+     * @returns {Object} Weight in kg and lb
+     */
+    function calculateRoundBarWeight(diameter, length, steelType, unit) {
+        let diameterM, lengthM;
+        
+        if (unit === 'metric') {
+            diameterM = diameter * UNIT_FACTORS.mm_to_m;
+            lengthM = length * UNIT_FACTORS.mm_to_m;
+        } else {
+            diameterM = diameter * UNIT_FACTORS.inch_to_m;
+            lengthM = length * UNIT_FACTORS.inch_to_m;
+        }
+        
+        const radius = diameterM / 2;
+        const volume = Math.PI * radius * radius * lengthM; // m³
+        const density = DENSITIES[steelType];
+        const weightKg = volume * density;
+        const weightLb = weightKg * UNIT_FACTORS.kg_to_lb;
+        
+        return {
+            kg: weightKg,
+            lb: weightLb
+        };
+    }
+
+    /**
+     * Calculate weight of a square bar
+     * @param {number} side - Side length in selected unit
+     * @param {number} length - Length in selected unit
+     * @param {string} steelType - Type of steel
+     * @param {string} unit - Unit of measurement (metric/imperial)
+     * @returns {Object} Weight in kg and lb
+     */
+    function calculateSquareBarWeight(side, length, steelType, unit) {
+        let sideM, lengthM;
+        
+        if (unit === 'metric') {
+            sideM = side * UNIT_FACTORS.mm_to_m;
+            lengthM = length * UNIT_FACTORS.mm_to_m;
+        } else {
+            sideM = side * UNIT_FACTORS.inch_to_m;
+            lengthM = length * UNIT_FACTORS.inch_to_m;
+        }
+        
+        const volume = sideM * sideM * lengthM; // m³
+        const density = DENSITIES[steelType];
+        const weightKg = volume * density;
+        const weightLb = weightKg * UNIT_FACTORS.kg_to_lb;
+        
+        return {
+            kg: weightKg,
+            lb: weightLb
+        };
+    }
+
+    /**
+     * Calculate weight of a hexagonal bar
+     * @param {number} acrossFlats - Distance across flats in selected unit
+     * @param {number} length - Length in selected unit
+     * @param {string} steelType - Type of steel
+     * @param {string} unit - Unit of measurement (metric/imperial)
+     * @returns {Object} Weight in kg and lb
+     */
+    function calculateHexBarWeight(acrossFlats, length, steelType, unit) {
+        let acrossFlatsM, lengthM;
+        
+        if (unit === 'metric') {
+            acrossFlatsM = acrossFlats * UNIT_FACTORS.mm_to_m;
+            lengthM = length * UNIT_FACTORS.mm_to_m;
+        } else {
+            acrossFlatsM = acrossFlats * UNIT_FACTORS.inch_to_m;
+            lengthM = length * UNIT_FACTORS.inch_to_m;
+        }
+        
+        // Formula for hexagonal area: (3√3/2) * (AF/2)²
+        const area = (3 * Math.sqrt(3) / 2) * Math.pow(acrossFlatsM / 2, 2);
+        const volume = area * lengthM; // m³
+        const density = DENSITIES[steelType];
+        const weightKg = volume * density;
+        const weightLb = weightKg * UNIT_FACTORS.kg_to_lb;
+        
+        return {
+            kg: weightKg,
+            lb: weightLb
+        };
+    }
+
+    /**
+     * Calculate weight of a hollow tube
+     * @param {number} outerDiameter - Outer diameter in selected unit
+     * @param {number} innerDiameter - Inner diameter in selected unit
+     * @param {number} length - Length in selected unit
+     * @param {string} steelType - Type of steel
+     * @param {string} unit - Unit of measurement (metric/imperial)
+     * @returns {Object} Weight in kg and lb
+     */
+    function calculateTubeWeight(outerDiameter, innerDiameter, length, steelType, unit) {
+        let outerDiameterM, innerDiameterM, lengthM;
+        
+        if (unit === 'metric') {
+            outerDiameterM = outerDiameter * UNIT_FACTORS.mm_to_m;
+            innerDiameterM = innerDiameter * UNIT_FACTORS.mm_to_m;
+            lengthM = length * UNIT_FACTORS.mm_to_m;
+        } else {
+            outerDiameterM = outerDiameter * UNIT_FACTORS.inch_to_m;
+            innerDiameterM = innerDiameter * UNIT_FACTORS.inch_to_m;
+            lengthM = length * UNIT_FACTORS.inch_to_m;
+        }
+        
+        const outerRadius = outerDiameterM / 2;
+        const innerRadius = innerDiameterM / 2;
+        const volume = Math.PI * (Math.pow(outerRadius, 2) - Math.pow(innerRadius, 2)) * lengthM; // m³
+        const density = DENSITIES[steelType];
+        const weightKg = volume * density;
+        const weightLb = weightKg * UNIT_FACTORS.kg_to_lb;
+        
+        return {
+            kg: weightKg,
+            lb: weightLb
+        };
+    }
+
+    /**
+     * Calculate weight of a rectangular tube
+     * @param {number} height - Height in selected unit
+     * @param {number} width - Width in selected unit
+     * @param {number} thickness - Wall thickness in selected unit
+     * @param {number} length - Length in selected unit
+     * @param {string} steelType - Type of steel
+     * @param {string} unit - Unit of measurement (metric/imperial)
+     * @returns {Object} Weight in kg and lb
+     */
+    function calculateRectTubeWeight(height, width, thickness, length, steelType, unit) {
+        let heightM, widthM, thicknessM, lengthM;
+        
+        if (unit === 'metric') {
+            heightM = height * UNIT_FACTORS.mm_to_m;
+            widthM = width * UNIT_FACTORS.mm_to_m;
+            thicknessM = thickness * UNIT_FACTORS.mm_to_m;
+            lengthM = length * UNIT_FACTORS.mm_to_m;
+        } else {
+            heightM = height * UNIT_FACTORS.inch_to_m;
+            widthM = width * UNIT_FACTORS.inch_to_m;
+            thicknessM = thickness * UNIT_FACTORS.inch_to_m;
+            lengthM = length * UNIT_FACTORS.inch_to_m;
+        }
+        
+        // Calculate outer and inner areas
+        const outerArea = heightM * widthM;
+        const innerArea = (heightM - 2 * thicknessM) * (widthM - 2 * thicknessM);
+        const volume = (outerArea - innerArea) * lengthM; // m³
+        const density = DENSITIES[steelType];
+        const weightKg = volume * density;
+        const weightLb = weightKg * UNIT_FACTORS.kg_to_lb;
+        
+        return {
+            kg: weightKg,
+            lb: weightLb
+        };
+    }
+
+    /**
+     * Calculate weight of an angle
+     * @param {number} height - Height in selected unit
+     * @param {number} width - Width in selected unit
+     * @param {number} thickness - Thickness in selected unit
+     * @param {number} length - Length in selected unit
+     * @param {string} steelType - Type of steel
+     * @param {string} unit - Unit of measurement (metric/imperial)
+     * @returns {Object} Weight in kg and lb
+     */
+    function calculateAngleWeight(height, width, thickness, length, steelType, unit) {
+        let heightM, widthM, thicknessM, lengthM;
+        
+        if (unit === 'metric') {
+            heightM = height * UNIT_FACTORS.mm_to_m;
+            widthM = width * UNIT_FACTORS.mm_to_m;
+            thicknessM = thickness * UNIT_FACTORS.mm_to_m;
+            lengthM = length * UNIT_FACTORS.mm_to_m;
+        } else {
+            heightM = height * UNIT_FACTORS.inch_to_m;
+            widthM = width * UNIT_FACTORS.inch_to_m;
+            thicknessM = thickness * UNIT_FACTORS.inch_to_m;
+            lengthM = length * UNIT_FACTORS.inch_to_m;
+        }
+        
+        // Calculate the volume of the angle (L-shaped)
+        // Volume = (height*thickness + (width-thickness)*thickness) * length
+        const volume = (heightM * thicknessM + (widthM - thicknessM) * thicknessM) * lengthM; // m³
+        const density = DENSITIES[steelType];
+        const weightKg = volume * density;
+        const weightLb = weightKg * UNIT_FACTORS.kg_to_lb;
+        
+        return {
+            kg: weightKg,
+            lb: weightLb
+        };
+    }
+
+    /**
+     * Format weight result
+     * @param {number} weight - Weight value
+     * @returns {string} Formatted weight
+     */
+    function formatWeight(weight) {
+        if (weight < 0.01) {
+            return weight.toFixed(5);
+        } else if (weight < 0.1) {
+            return weight.toFixed(4);
+        } else if (weight < 1) {
+            return weight.toFixed(3);
+        } else if (weight < 10) {
+            return weight.toFixed(2);
+        } else {
+            return weight.toFixed(1);
+        }
+    }
+    
+    /**
+     * Steel Weight Calculator UI Handler
+     * Manages the user interface interactions and form submissions
+     */
+    document.addEventListener('DOMContentLoaded', function() {
+        // DOM elements
+        const calculatorForm = document.getElementById('calculator-form');
+        const shapeSelect = document.getElementById('shape');
+        const steelTypeSelect = document.getElementById('steel-type');
+        const unitRadios = document.querySelectorAll('input[name="unit"]');
+        const resultsDiv = document.getElementById('results');
+        const shapeItems = document.querySelectorAll('.shape-item');
+        const dimensionFields = document.querySelectorAll('.dimension-field');
+        
+        // Initial setup
+        updateFormFields();
+        updateUnitLabels();
+        
+        // Event listeners
+        shapeSelect.addEventListener('change', updateFormFields);
+        unitRadios.forEach(radio => {
+            radio.addEventListener('change', updateUnitLabels);
+        });
+        
+        shapeItems.forEach(item => {
+            item.addEventListener('click', function() {
+                // Remove active class from all shapes
+                shapeItems.forEach(i => i.classList.remove('active'));
+                
+                // Add active class to selected shape
+                this.classList.add('active');
+                
+                // Update select value
+                shapeSelect.value = this.dataset.shape;
+                
+                // Update form fields
+                updateFormFields();
+            });
+        });
+        
+        calculatorForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            calculateWeight();
+        });
+        
+        document.getElementById('reset-button').addEventListener('click', function() {
+            calculatorForm.reset();
+            updateFormFields();
+            updateUnitLabels();
+            resultsDiv.classList.add('hidden');
+        });
+        
+        /**
+         * Updates the visible form fields based on the selected shape
+         */
+        function updateFormFields() {
+            const selectedShape = shapeSelect.value;
+            
+            // Hide all dimension fields
+            dimensionFields.forEach(field => {
+                field.classList.add('hidden-field');
+            });
+            
+            // Show relevant fields for the selected shape
+            switch (selectedShape) {
+                case 'plate':
+                    showFields(['length-field', 'width-field', 'thickness-field']);
+                    break;
+                case 'round_bar':
+                    showFields(['diameter-field', 'length-field']);
+                    break;
+                case 'square_bar':
+                    showFields(['side-field', 'length-field']);
+                    break;
+                case 'hex_bar':
+                    showFields(['across-flats-field', 'length-field']);
+                    break;
+                case 'tube':
+                    showFields(['outer-diameter-field', 'inner-diameter-field', 'length-field']);
+                    break;
+                case 'rect_tube':
+                    showFields(['height-field', 'width-field', 'wall-thickness-field', 'length-field']);
+                    break;
+                case 'angle':
+                    showFields(['height-field', 'width-field', 'thickness-field', 'length-field']);
+                    break;
+            }
+            
+            // Update the active shape item
+            shapeItems.forEach(item => {
+                if (item.dataset.shape === selectedShape) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // Update unit labels
+            updateUnitLabels();
+        }
+        
+        /**
+         * Show the specified form fields
+         * @param {Array} fieldIds - IDs of fields to show
+         */
+        function showFields(fieldIds) {
+            fieldIds.forEach(id => {
+                const field = document.getElementById(id);
+                if (field) {
+                    field.classList.remove('hidden-field');
+                }
+            });
+        }
+        
+        /**
+         * Updates the unit labels based on the selected unit system
+         */
+        function updateUnitLabels() {
+            const unit = document.querySelector('input[name="unit"]:checked').value;
+            const unitLabels = document.querySelectorAll('.unit-display');
+            
+            unitLabels.forEach(label => {
+                if (unit === 'metric') {
+                    label.textContent = 'mm';
+                } else {
+                    label.textContent = 'in';
+                }
+            });
+        }
+        
+        /**
+         * Validates form inputs
+         * @returns {boolean} True if all inputs are valid, false otherwise
+         */
+        function validateForm() {
+            const selectedShape = shapeSelect.value;
+            let isValid = true;
+            let errorMessage = '';
+            
+            // Clear previous error messages
+            document.querySelectorAll('.validation-error').forEach(el => el.remove());
+            
+            // Common validation for all shapes
+            if (!steelTypeSelect.value) {
+                errorMessage = 'Please select a steel type';
+                displayError(steelTypeSelect, errorMessage);
+                isValid = false;
+            }
+            
+            // Shape-specific validation
+            switch (selectedShape) {
+                case 'plate':
+                    isValid = validateNumericFields(['length', 'width', 'thickness']) && isValid;
+                    break;
+                case 'round_bar':
+                    isValid = validateNumericFields(['diameter', 'length']) && isValid;
+                    break;
+                case 'square_bar':
+                    isValid = validateNumericFields(['side', 'length']) && isValid;
+                    break;
+                case 'hex_bar':
+                    isValid = validateNumericFields(['across-flats', 'length']) && isValid;
+                    break;
+                case 'tube':
+                    if (validateNumericFields(['outer-diameter', 'inner-diameter', 'length'])) {
+                        const outerDiameter = parseFloat(document.getElementById('outer-diameter').value);
+                        const innerDiameter = parseFloat(document.getElementById('inner-diameter').value);
+                        
+                        if (innerDiameter >= outerDiameter) {
+                            errorMessage = 'Inner diameter must be less than outer diameter';
+                            displayError(document.getElementById('inner-diameter'), errorMessage);
+                            isValid = false;
+                        }
+                    } else {
+                        isValid = false;
+                    }
+                    break;
+                case 'rect_tube':
+                    isValid = validateNumericFields(['height', 'width', 'wall-thickness', 'length']) && isValid;
+                    
+                    if (isValid) {
+                        const height = parseFloat(document.getElementById('height').value);
+                        const width = parseFloat(document.getElementById('width').value);
+                        const thickness = parseFloat(document.getElementById('wall-thickness').value);
+                        
+                        if (thickness * 2 >= height || thickness * 2 >= width) {
+                            errorMessage = 'Wall thickness is too large for the dimensions';
+                            displayError(document.getElementById('wall-thickness'), errorMessage);
+                            isValid = false;
+                        }
+                    }
+                    break;
+                case 'angle':
+                    isValid = validateNumericFields(['height', 'width', 'thickness', 'length']) && isValid;
+                    break;
+            }
+            
+            return isValid;
+        }
+        
+        /**
+         * Validates numeric fields
+         * @param {Array} fieldIds - IDs of fields to validate
+         * @returns {boolean} True if all fields are valid
+         */
+        function validateNumericFields(fieldIds) {
+            let isValid = true;
+            
+            fieldIds.forEach(id => {
+                const field = document.getElementById(id);
+                const value = field.value.trim();
+                
+                if (value === '' || isNaN(value) || parseFloat(value) <= 0) {
+                    let fieldName = field.previousElementSibling.textContent.replace(':', '');
+                    let errorMessage = `Please enter a valid positive number for ${fieldName}`;
+                    displayError(field, errorMessage);
+                    isValid = false;
+                }
+            });
+            
+            return isValid;
+        }
+        
+        /**
+         * Displays an error message for a field
+         * @param {Element} field - The field with an error
+         * @param {string} message - Error message
+         */
+        function displayError(field, message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'validation-error';
+            errorDiv.textContent = message;
+            field.parentNode.appendChild(errorDiv);
+        }
+        
+        /**
+         * Calculates weight based on form inputs
+         */
+        function calculateWeight() {
+            if (!validateForm()) {
+                return;
+            }
+            
+            const shape = shapeSelect.value;
+            const steelType = steelTypeSelect.value;
+            const unit = document.querySelector('input[name="unit"]:checked').value;
+            let weight;
+            
+            switch (shape) {
+                case 'plate':
+                    const plateLength = parseFloat(document.getElementById('length').value);
+                    const plateWidth = parseFloat(document.getElementById('width').value);
+                    const plateThickness = parseFloat(document.getElementById('thickness').value);
+                    weight = calculatePlateWeight(plateLength, plateWidth, plateThickness, steelType, unit);
+                    break;
+                    
+                case 'round_bar':
+                    const diameter = parseFloat(document.getElementById('diameter').value);
+                    const roundLength = parseFloat(document.getElementById('length').value);
+                    weight = calculateRoundBarWeight(diameter, roundLength, steelType, unit);
+                    break;
+                    
+                case 'square_bar':
+                    const side = parseFloat(document.getElementById('side').value);
+                    const squareLength = parseFloat(document.getElementById('length').value);
+                    weight = calculateSquareBarWeight(side, squareLength, steelType, unit);
+                    break;
+                    
+                case 'hex_bar':
+                    const acrossFlats = parseFloat(document.getElementById('across-flats').value);
+                    const hexLength = parseFloat(document.getElementById('length').value);
+                    weight = calculateHexBarWeight(acrossFlats, hexLength, steelType, unit);
+                    break;
+                    
+                case 'tube':
+                    const outerDiameter = parseFloat(document.getElementById('outer-diameter').value);
+                    const innerDiameter = parseFloat(document.getElementById('inner-diameter').value);
+                    const tubeLength = parseFloat(document.getElementById('length').value);
+                    weight = calculateTubeWeight(outerDiameter, innerDiameter, tubeLength, steelType, unit);
+                    break;
+                    
+                case 'rect_tube':
+                    const rectHeight = parseFloat(document.getElementById('height').value);
+                    const rectWidth = parseFloat(document.getElementById('width').value);
+                    const wallThickness = parseFloat(document.getElementById('wall-thickness').value);
+                    const rectLength = parseFloat(document.getElementById('length').value);
+                    weight = calculateRectTubeWeight(rectHeight, rectWidth, wallThickness, rectLength, steelType, unit);
+                    break;
+                    
+                case 'angle':
+                    const angleHeight = parseFloat(document.getElementById('height').value);
+                    const angleWidth = parseFloat(document.getElementById('width').value);
+                    const angleThickness = parseFloat(document.getElementById('thickness').value);
+                    const angleLength = parseFloat(document.getElementById('length').value);
+                    weight = calculateAngleWeight(angleHeight, angleWidth, angleThickness, angleLength, steelType, unit);
+                    break;
+            }
+            
+            // Display results
+            const formattedKg = formatWeight(weight.kg);
+            const formattedLb = formatWeight(weight.lb);
+            
+            resultsDiv.innerHTML = `
+                <div class="result-box">
+                    <div>Weight: <strong>${formattedKg} kg</strong> (${formattedLb} lb)</div>
+                </div>
+                <div class="calculations-info">
+                    <h3>Calculation Details</h3>
+                    <p>The weight is calculated based on the volume of the steel and its density.</p>
+                    <p>Steel Type: ${steelTypeSelect.options[steelTypeSelect.selectedIndex].text}</p>
+                    <p>Density: ${DENSITIES[steelType]} kg/m³</p>
+                </div>
+            `;
+            
+            resultsDiv.classList.remove('hidden');
+        }
+    });
+    </script>
+</body>
+</html>
