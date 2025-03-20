@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Typing Club</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px;
+        }
+        #text-container {
+            font-size: 24px;
+            margin: 20px auto;
+            width: 80%;
+            padding: 15px;
+            border: 2px solid white;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+        #input-box {
+            width: 80%;
+            font-size: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            text-align: center;
+        }
+        .stats {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .level-selector {
+            margin: 15px;
+        }
+        .highlight {
+            background-color: yellow;
+            color: black;
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #ff9800;
+            color: white;
+        }
+        #result {
+            font-size: 24px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ultimate Typing Club</h1>
+    <p>Select a level to begin your typing challenge:</p>
+    <div class="level-selector">
+        <button onclick="setLevel('easy')">Easy</button>
+        <button onclick="setLevel('medium')">Medium</button>
+        <button onclick="setLevel('hard')">Hard</button>
+    </div>
+    <div id="text-container"></div>
+    <input type="text" id="input-box" oninput="checkTyping()" placeholder="Start typing here...">
+    <div class="stats">
+        <p>WPM: <span id="wpm">0</span></p>
+        <p>Accuracy: <span id="accuracy">100%</span></p>
+    </div>
+    <div id="result"></div>
+    <script>
+        let levels = {
+            easy: "The cat sits on the mat.",
+            medium: "Typing fast requires practice and patience.",
+            hard: "The quick brown fox jumps over the lazy dog, showcasing agility and speed."
+        };
+        let currentText = "";
+        let startTime;
+        let completedWords = 0;
+        
+        function setLevel(level) {
+            currentText = levels[level];
+            document.getElementById("text-container").innerText = currentText;
+            document.getElementById("input-box").value = "";
+            document.getElementById("wpm").innerText = "0";
+            document.getElementById("accuracy").innerText = "100%";
+            document.getElementById("result").innerText = "";
+            startTime = null;
+            completedWords = 0;
+        }
+        
+        function checkTyping() {
+            let inputBox = document.getElementById('input-box');
+            let userInput = inputBox.value;
+            let wordsTyped = userInput.trim().split(/\s+/).length;
+            
+            if (userInput.length === 1 && !startTime) {
+                startTime = new Date();
+            }
+            
+            let correctChars = 0;
+            let displayText = "";
+            for (let i = 0; i < currentText.length; i++) {
+                if (i < userInput.length) {
+                    if (userInput[i] === currentText[i]) {
+                        displayText += `<span>${currentText[i]}</span>`;
+                        correctChars++;
+                    } else {
+                        displayText += `<span class='highlight'>${currentText[i]}</span>`;
+                    }
+                } else {
+                    displayText += `<span>${currentText[i]}</span>`;
+                }
+            }
+            document.getElementById('text-container').innerHTML = displayText;
+            
+            let accuracy = userInput.length > 0 ? ((correctChars / userInput.length) * 100).toFixed(2) : 100;
+            document.getElementById('accuracy').innerText = accuracy + "%";
+            
+            if (startTime) {
+                let timeElapsed = (new Date() - startTime) / 60000; // in minutes
+                let wpm = timeElapsed > 0 ? Math.round(wordsTyped / timeElapsed) : 0;
+                document.getElementById('wpm').innerText = wpm;
+                
+                if (userInput.trim() === currentText) {
+                    let result = document.getElementById('result');
+                    if (wpm > 30) {
+                        result.innerHTML = "🏆 Congratulations! You win!";
+                    } else {
+                        result.innerHTML = "❌ Try Again!";
+                    }
+                }
+            }
+        }
+        
+        setLevel('easy'); // Default level on load
+    </script>
+</body>
+</html>
