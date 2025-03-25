@@ -1,2 +1,2 @@
 # AtiqRehman.github.io
-"My typing practice website." "A simple web app for improving typing speed." "Typing Club-inspired practice site."
+A multi-tool web app featuring typing practice, a calculator, and a steel weight measurement tool
